@@ -11,17 +11,29 @@ def _fizzbuzz_value(n: int) -> str:
         return str(n)
 
 def affiche(*args) -> str:
-    # Partie A : aucun argument → 1 à 100
+    """
+    Gère les 3 versions :
+
+    - affiche()         -> Partie A, 1 à 100
+    - affiche(n)        -> Partie B, 1 à n
+    - affiche(n1, n2)   -> Partie C, n1 à n2
+    """
+
+    # PARTIE A — aucun argument → 1 à 100
     if len(args) == 0:
         debut, fin = 1, 100
-    
-    # Partie B : un argument → 1 à n
+
+    # PARTIE B — un argument → 1 à n
     elif len(args) == 1:
         n = args[0]
         debut, fin = 1, n
-    
+
+    # PARTIE C — deux arguments → n1 à n2
+    elif len(args) == 2:
+        debut, fin = args[0], args[1]
+
     else:
-        raise TypeError("affiche() prend 0 ou 1 argument pour l'instant.")
+        raise TypeError("affiche() prend 0, 1 ou 2 arguments.")
 
     resultat = []
     for i in range(debut, fin + 1):
@@ -29,5 +41,7 @@ def affiche(*args) -> str:
 
     return "".join(resultat)
 
+
 if __name__ == "__main__":
-    print(affiche(15))
+    # Exemple Partie C
+    print(affiche(5, 10))
