@@ -1,34 +1,34 @@
 # crypto.py
 
-def crypt(message: str) -> str:
-  
+def crypt(message: str, pas: int = 1) -> str:
+
+    if not (1 <= pas <= 9):
+        raise ValueError("Le pas doit être un entier entre 1 et 9.")
+
     resultat = ""
 
     for char in message:
-        #lettre minuscule
+
+        # Lettres minuscules
         if 'a' <= char <= 'z':
-            #Décalage circulaire
-            if char == 'z':
-                resultat += 'a'
-            else:
-                resultat += chr(ord(char) + 1)
+            resultat += chr((ord(char) - ord('a') + pas) % 26 + ord('a'))
 
-        #lettre majuscule
+        # Lettres majuscules
         elif 'A' <= char <= 'Z':
-            if char == 'Z':
-                resultat += 'A'
-            else:
-                resultat += chr(ord(char) + 1)
+            resultat += chr((ord(char) - ord('A') + pas) % 26 + ord('A'))
 
-        #autres caractères (espace, chiffres, ponctuation…)
+        # Caractères non alphabétiques
         else:
             resultat += char
+
+    # On ajoute le pas à la fin du message crypté :
+    resultat += str(pas)
 
     return resultat
 
 
 if __name__ == "__main__":
-    print(crypt("Bonjour"))
-    print(crypt("xyz"))
-    print(crypt("ZOO"))
-    print(crypt("Hello World !"))
+    print(crypt("Bonjour", 1))
+    print(crypt("xyz", 2))
+    print(crypt("ZOO", 3))
+    print(crypt("Hello World !", 4))
