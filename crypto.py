@@ -2,8 +2,8 @@
 
 def crypt(message: str, pas: int = 1) -> str:
 
-    if not (1 <= pas <= 9):
-        raise ValueError("Le pas doit être un entier entre 1 et 9.")
+    if pas == 0 or abs(pas) > 9:
+        raise ValueError("Le pas doit être entre 1 et 9 en valeur absolue.")
 
     resultat = ""
 
@@ -17,18 +17,39 @@ def crypt(message: str, pas: int = 1) -> str:
         elif 'A' <= char <= 'Z':
             resultat += chr((ord(char) - ord('A') + pas) % 26 + ord('A'))
 
-        # Caractères non alphabétiques
+        # Caractères non alphabétiques → inchangés
         else:
             resultat += char
 
-    # On ajoute le pas à la fin du message crypté :
+    # Ajout du pas en fin de message crypté
     resultat += str(pas)
 
     return resultat
 
+def decrypt(message: str) -> str:
+
+    if len(message) == 0:
+        return ""
+
+    # Récupération du pas stocké à la fin du message
+    pas = int(message[-1])
+
+    # Message crypté sans le pas final
+    contenu = message[:-1]
+
+    # Décryptage = cryptage avec un pas négatif
+    return crypt(contenu, -pas)
 
 if __name__ == "__main__":
+
+    print("TEST MESSAGE CRYPTE :")
     print(crypt("Bonjour", 1))
     print(crypt("xyz", 2))
     print(crypt("ZOO", 3))
     print(crypt("Hello World !", 4))
+
+    print("\nTEST MESSAGE DECRYPTE :")
+    print(decrypt(crypt("Bonjour", 1)))
+    print(decrypt(crypt("xyz", 2)))
+    print(decrypt(crypt("ZOO", 3)))
+    print(decrypt(crypt("Hello World !", 4)))
